@@ -11,5 +11,5 @@ app.use(require("./routes/auth"));
 app.use(require("./routes/notes"));
 
 app.listen(port, () => {
-  console.log(`App is lisitening at http://localhost:${port}`);
+  console.log(`iNotebook is lisitening at http://localhost:${port}`);
 });
