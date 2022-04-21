@@ -2,10 +2,7 @@ import React, { useState } from "react";
 import AlertContext from "./alertContext";
 
 const AlertState = (props) => {
-  const [alert, setAlert] = useState({
-    type: "",
-    message: "",
-  });
+  const [alert, setAlert] = useState(null);
 
   return (
     <AlertContext.Provider value={{ alert, setAlert }}>
