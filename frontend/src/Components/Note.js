@@ -5,11 +5,12 @@ import Noteitem from "./Noteitem";
 
 export default function Note() {
   const context = useContext(noteContext);
-  const { notes, setNotes } = context;
+  console.log(context);
+  const { notes } = context;
   return (
     <div className="row my-3">
       {notes.map((element) => {
-        return <Noteitem note={element} />;
+        return <Noteitem key={element._id} note={element} />;
       })}
     </div>
   );
