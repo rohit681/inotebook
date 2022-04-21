@@ -5,7 +5,6 @@ import Noteitem from "./Noteitem";
 
 export default function Note() {
   const context = useContext(noteContext);
-  console.log(context);
   const { notes } = context;
   return (
     <div className="row my-3">
