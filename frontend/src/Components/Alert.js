@@ -7,8 +7,8 @@ export default function Alert() {
   return (
     alert && (
       <div>
-        <div class="alert alert-primary" role="alert">
-          {alert.message}
+        <div className="alert alert-primary" role="alert">
+          <strong>{alert.type}</strong>: {alert.message}
         </div>
       </div>
     )

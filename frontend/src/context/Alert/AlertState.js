@@ -2,20 +2,13 @@ import React, { useState } from "react";
 import AlertContext from "./alertContext";
 
 const AlertState = (props) => {
-  const [alert, setAlert] = useState(null);
-
-  const showAlert = (message, type) => {
-    setAlert({
-      message: message,
-      type: type,
-    });
-    setTimeout(() => {
-      setAlert(null);
-    }, 1500);
-  };
+  const [alert, setAlert] = useState({
+    type: "",
+    message: "",
+  });
 
   return (
-    <AlertContext.Provider value={{ alert, showAlert }}>
+    <AlertContext.Provider value={{ alert, setAlert }}>
       {props.children}
     </AlertContext.Provider>
   );

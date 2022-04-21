@@ -12,7 +12,6 @@ function App() {
     <div className="App">
       <AlertState>
         <NoteState>
-          <Alert />
           <BrowserRouter>
             <Navbar />
             <Alert />
