@@ -6,6 +6,7 @@ const Notes = require("../models/Notes");
 
 //Route 1:  addNotes
 router.post("/addNotes", finduser, async (req, res) => {
+  console.log(req.body.title, "lkjhgfdsa");
   const { title, description, tag } = req.body;
   if (!title || !description) {
     return res
@@ -21,6 +22,7 @@ router.post("/addNotes", finduser, async (req, res) => {
 
 // route to find all notes of a user
 router.get("/fetchnotes", finduser, async (req, res) => {
+  console.log("SDadads");
   const notes = await Notes.find({ user: req.user.id });
   res.json(notes);
 });
@@ -32,7 +34,6 @@ router.put("/updateNote/:id", finduser, async (req, res) => {
   if (title) newNote.title = title;
   if (description) newNote.description = description;
   if (tag) newNote.tag = tag;
-
   let note = await Notes.findById(req.params.id);
   if (!note) {
     return res.status(404).send("Not fonud");
@@ -53,6 +54,7 @@ router.put("/updateNote/:id", finduser, async (req, res) => {
 
 //Route 3: delete note
 router.delete("/deleteNote/:id", finduser, async (req, res) => {
+  console.log("note deleted successfully");
   let note = await Notes.findById(req.params.id);
   if (!note) {
     return res.status(404).send("Not fonud");

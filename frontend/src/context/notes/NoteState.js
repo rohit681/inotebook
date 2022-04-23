@@ -1,120 +1,98 @@
-import React from "react";
+import React, { useEffect } from "react";
 import noteContext from "./noteContext";
 import { useState } from "react";
 
 const NoteState = (props) => {
-  const initialNotes = [
-    {
-      _id: "625bafbe6b436f938b2d5cf8",
-      user: "625ada5706864e6fee1c09e2",
-      title: "this is my fukkin title abra ka dabra gilli booo",
-      description: "this is a fuckkin desc maa chuda k bhag jaa tu",
-      tag: "fukkin tag khada kyaa h nikal naa",
-      date: "2022-04-17T06:12:14.455Z",
-      __v: 0,
-    },
-    {
-      _id: "625b0f6998150d5363d0218c",
-      user: "625ac9027c33eba24b7a8a87",
-      title: "changed title",
-      description: "changed title",
-      tag: "General",
-      date: "2022-04-16T18:48:09.125Z",
-      __v: 0,
-    },
-    {
-      _id: "625bafbe6b436f938b2d5cf81",
-      user: "625ada5706864e6fee1c09e2",
-      title: "this is my fukkin title abra ka dabra gilli booo",
-      description: "this is a fuckkin desc maa chuda k bhag jaa tu",
-      tag: "fukkin tag khada kyaa h nikal naa",
-      date: "2022-04-17T06:12:14.455Z",
-      __v: 0,
-    },
-    {
-      _id: "625b0f6998150d5363d0218c2",
-      user: "625ac9027c33eba24b7a8a87",
-      title: "changed title",
-      description: "changed title",
-      tag: "General",
-      date: "2022-04-16T18:48:09.125Z",
-      __v: 0,
-    },
-    {
-      _id: "625bafbe6b436f938b2d5cf83",
-      user: "625ada5706864e6fee1c09e2",
-      title: "this is my fukkin title abra ka dabra gilli booo",
-      description: "this is a fuckkin desc maa chuda k bhag jaa tu",
-      tag: "fukkin tag khada kyaa h nikal naa",
-      date: "2022-04-17T06:12:14.455Z",
-      __v: 0,
-    },
-    {
-      _id: "625b0f6998150d5363d0218c4",
-      user: "625ac9027c33eba24b7a8a87",
-      title: "changed title",
-      description: "changed title",
-      tag: "General",
-      date: "2022-04-16T18:48:09.125Z",
-      __v: 0,
-    },
-    {
-      _id: "625bafbe6b436f938b2d5cf85",
-      user: "625ada5706864e6fee1c09e2",
-      title: "this is my fukkin title abra ka dabra gilli booo",
-      description: "this is a fuckkin desc maa chuda k bhag jaa tu",
-      tag: "fukkin tag khada kyaa h nikal naa",
-      date: "2022-04-17T06:12:14.455Z",
-      __v: 0,
-    },
-    {
-      _id: "625b0f6998150d5363d0218c6",
-      user: "625ac9027c33eba24b7a8a87",
-      title: "changed title",
-      description: "changed title",
-      tag: "General",
-      date: "2022-04-16T18:48:09.125Z",
-      __v: 0,
-    },
-    {
-      _id: "625bafbe6b436f938b2d5cf87",
-      user: "625ada5706864e6fee1c09e2",
-      title: "this is my fukkin title abra ka dabra gilli booo",
-      description: "this is a fuckkin desc maa chuda k bhag jaa tu",
-      tag: "fukkin tag khada kyaa h nikal naa",
-      date: "2022-04-17T06:12:14.455Z",
-      __v: 0,
-    },
-    {
-      _id: "625b0f6998150d5363d0218c8",
-      user: "625ac9027c33eba24b7a8a87",
-      title: "changed title",
-      description: "changed title",
-      tag: "General",
-      date: "2022-04-16T18:48:09.125Z",
-      __v: 0,
-    },
-  ];
+  const host = "http://localhost:5000";
+
+  const initialNotes = [];
 
   const [notes, setNotes] = useState(initialNotes);
 
-  const addNote = (title, description, tag) => {
-    const note = {
-      title: title,
-      description: description,
-      tag: tag,
+  useEffect(() => {
+    const fetchNote = async () => {
+      const response = await fetch(`${host}/fetchnotes`, {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token":
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI1YWRhNTcwNjg2NGU2ZmVlMWMwOWUyIn0sImlhdCI6MTY1MDE3NTc3OX0.3i0ceby7h5Y3F3HfdIQwa_VzF4m3yEkarRAJacqq9oc",
+        },
+      });
+      const data = await response.json();
+      setNotes(data);
     };
-    setNotes(notes.concat(note));
+    fetchNote();
+  }, []);
+
+  const addNote = async (title, description, tag) => {
+    await fetch(`${host}/addNotes`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI1YWRhNTcwNjg2NGU2ZmVlMWMwOWUyIn0sImlhdCI6MTY1MDE3NTc3OX0.3i0ceby7h5Y3F3HfdIQwa_VzF4m3yEkarRAJacqq9oc",
+      },
+      body: JSON.stringify({ title, description, tag }),
+    });
+
+    const res = await fetch(`${host}/fetchNotes`, {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI1YWRhNTcwNjg2NGU2ZmVlMWMwOWUyIn0sImlhdCI6MTY1MDE3NTc3OX0.3i0ceby7h5Y3F3HfdIQwa_VzF4m3yEkarRAJacqq9oc",
+      },
+    });
+
+    const data = await res.json();
+
+    setNotes(data);
   };
 
-  const deleteNote = (id) => {
+  const deleteNote = async (id) => {
+    await fetch(`${host}/deleteNote/${id}`, {
+      method: "DELETE",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI1YWRhNTcwNjg2NGU2ZmVlMWMwOWUyIn0sImlhdCI6MTY1MDE3NTc3OX0.3i0ceby7h5Y3F3HfdIQwa_VzF4m3yEkarRAJacqq9oc",
+      },
+    });
+
     const newNotes = notes.filter((note) => {
       return note._id !== id;
     });
     setNotes(newNotes);
   };
 
-  const updateNote = () => {};
+  const updateNote = async (id, note) => {
+    //connection to backend
+    // const response = await fetch(
+    //   `${host}/updateNote/625baf956b436f938b2d5cf6`,
+    //   {
+    //     method: "POST",
+    //     mode: "cors",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       "auth-token":
+    //         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI1YWRhNTcwNjg2NGU2ZmVlMWMwOWUyIn0sImlhdCI6MTY1MDE3NTc3OX0.3i0ceby7h5Y3F3HfdIQwa_VzF4m3yEkarRAJacqq9oc",
+    //     },
+    //   }
+    // );
+
+    //update a note
+    for (var i = 0; i < notes.length(); i++) {
+      if (notes[i]._id === id) {
+        notes[i].title = note.title;
+        notes[i].description = note.description;
+      }
+    }
+  };
 
   return (
     <noteContext.Provider
