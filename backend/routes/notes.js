@@ -6,23 +6,25 @@ const Notes = require("../models/Notes");
 
 //Route 1:  addNotes
 router.post("/addNotes", finduser, async (req, res) => {
-  console.log(req.body.title, "lkjhgfdsa");
-  const { title, description, tag } = req.body;
-  if (!title || !description) {
-    return res
-      .status(422)
-      .json({ error: "please fill all the required feild" });
+  try {
+    const { title, description, tag } = req.body;
+    if (!title || !description) {
+      return res
+        .status(422)
+        .json({ error: "please fill all the required feild" });
+    }
+
+    const note = new Notes({ user: req.user.id, title, description, tag });
+    await note.save();
+
+    res.status(200).json({ message: "note added successfully" });
+  } catch (error) {
+    console.log(error);
   }
-
-  const note = new Notes({ user: req.user.id, title, description, tag });
-  await note.save();
-
-  res.status(200).json({ message: "note added successfully" });
 });
 
 // route to find all notes of a user
 router.get("/fetchnotes", finduser, async (req, res) => {
-  console.log("SDadads");
   const notes = await Notes.find({ user: req.user.id });
   res.json(notes);
 });
@@ -36,7 +38,7 @@ router.put("/updateNote/:id", finduser, async (req, res) => {
   if (tag) newNote.tag = tag;
   let note = await Notes.findById(req.params.id);
   if (!note) {
-    return res.status(404).send("Not fonud");
+    return res.status(404).send("Noass");
   }
 
   if (note.user.toString() !== req.user.id) {
@@ -54,7 +56,6 @@ router.put("/updateNote/:id", finduser, async (req, res) => {
 
 //Route 3: delete note
 router.delete("/deleteNote/:id", finduser, async (req, res) => {
-  console.log("note deleted successfully");
   let note = await Notes.findById(req.params.id);
   if (!note) {
     return res.status(404).send("Not fonud");

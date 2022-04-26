@@ -13,6 +13,7 @@ function AddNotes() {
   const onAdd = (e) => {
     e.preventDefault();
     addNote(note.title, note.description, note.tag);
+    setNote({ title: "", description: "", tag: "Default" });
   };
   return (
     <div>
@@ -28,6 +29,7 @@ function AddNotes() {
               className="form-control"
               id="title"
               name="title"
+              value={note.title}
               aria-describedby="emailHelp"
               onChange={(e) =>
                 setNote({ ...note, [e.target.name]: e.target.value })
@@ -43,6 +45,7 @@ function AddNotes() {
               className="form-control"
               id="description"
               name="description"
+              value={note.description}
               onChange={(e) =>
                 setNote({ ...note, [e.target.name]: e.target.value })
               }

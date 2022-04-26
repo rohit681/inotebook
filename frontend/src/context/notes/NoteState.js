@@ -70,24 +70,26 @@ const NoteState = (props) => {
     setNotes(newNotes);
   };
 
-  const updateNote = async (id, note) => {
-    //connection to backend
-    // const response = await fetch(
-    //   `${host}/updateNote/625baf956b436f938b2d5cf6`,
-    //   {
-    //     method: "POST",
-    //     mode: "cors",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       "auth-token":
-    //         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI1YWRhNTcwNjg2NGU2ZmVlMWMwOWUyIn0sImlhdCI6MTY1MDE3NTc3OX0.3i0ceby7h5Y3F3HfdIQwa_VzF4m3yEkarRAJacqq9oc",
-    //     },
-    //   }
-    // );
+  const updateNote = async (note) => {
+    // connection to backend
+    await fetch(`${host}/updateNote/${note.id}`, {
+      method: "PUT",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI1YWRhNTcwNjg2NGU2ZmVlMWMwOWUyIn0sImlhdCI6MTY1MDE3NTc3OX0.3i0ceby7h5Y3F3HfdIQwa_VzF4m3yEkarRAJacqq9oc",
+      },
+      body: JSON.stringify({
+        title: note.title,
+        description: note.description,
+        tag: note.tag,
+      }),
+    });
 
     //update a note
-    for (var i = 0; i < notes.length(); i++) {
-      if (notes[i]._id === id) {
+    for (var i = 0; i < notes.length; i++) {
+      if (notes[i]._id === note.id) {
         notes[i].title = note.title;
         notes[i].description = note.description;
       }
