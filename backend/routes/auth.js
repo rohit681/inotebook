@@ -13,13 +13,15 @@ router.post("/api/auth", async (req, res) => {
   if (!name || !email || !password) {
     return res
       .status(422)
-      .json({ error: "please fill all the required details" });
+      .json({ authToken: null, error: "please fill all the required details" });
   }
 
   try {
     const isAlreadyExist = await iNotebook.findOne({ email });
     if (isAlreadyExist) {
-      return res.status(422).json({ error: "User already exist" });
+      return res
+        .status(422)
+        .json({ authToken: null, error: "User already exist" });
     }
 
     user = await iNotebook.create({ name, email, password });
@@ -33,7 +35,7 @@ router.post("/api/auth", async (req, res) => {
     const authToken = jwt.sign(data, secret);
     console.log(authToken);
 
-    res.status(201).json({ message: "user reg successfully" });
+    res.status(201).json({ authToken, message: "user reg successfully" });
   } catch (err) {
     console.log(err);
   }
@@ -44,17 +46,24 @@ router.post("/api/login", async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      return res.status(422).json({ error: "invalid cridentials" });
+      return res
+        .status(422)
+        .json({ authToken: null, error: "invalid cridentials" });
     }
 
-    const isUserExist = await iNotebook.findOne({ email: email });
+    const isUserExist = await iNotebook.findOne({
+      authToken: null,
+      email: email,
+    });
     if (!isUserExist) {
-      return res.status(422).json({ error: "user doesn't exist" });
+      return res
+        .status(422)
+        .json({ authToken: null, error: "user doesn't exist" });
     }
 
     const isMatch = await bcrypt.compare(password, isUserExist.password);
     if (!isMatch) {
-      return res.status(422).json({ error: "Wrong password" });
+      return res.status(422).json({ authToken: null, error: "Wrong password" });
     }
 
     const data = {
@@ -64,9 +73,10 @@ router.post("/api/login", async (req, res) => {
     };
 
     const authToken = jwt.sign(data, secret);
-    res.json(authToken);
 
-    //return res.status(200).json({ message: "user login successfully" });
+    return res
+      .status(200)
+      .json({ authToken: authToken, message: "user login successfully" });
   } catch (err) {
     console.log(err);
   }

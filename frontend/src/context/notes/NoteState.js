@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import noteContext from "./noteContext";
 import { useState } from "react";
 
@@ -9,22 +9,19 @@ const NoteState = (props) => {
 
   const [notes, setNotes] = useState(initialNotes);
 
-  useEffect(() => {
-    const fetchNote = async () => {
-      const response = await fetch(`${host}/fetchnotes`, {
-        method: "GET",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-          "auth-token":
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI1YWRhNTcwNjg2NGU2ZmVlMWMwOWUyIn0sImlhdCI6MTY1MDE3NTc3OX0.3i0ceby7h5Y3F3HfdIQwa_VzF4m3yEkarRAJacqq9oc",
-        },
-      });
-      const data = await response.json();
-      setNotes(data);
-    };
-    fetchNote();
-  }, []);
+  const fetchNote = async () => {
+    const response = await fetch(`${host}/fetchnotes`, {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": localStorage.getItem("token"),
+      },
+    });
+    const data = await response.json();
+    setNotes(data);
+  };
+  // eslint-disable-line react-hooks/exhaustive-deps
 
   const addNote = async (title, description, tag) => {
     await fetch(`${host}/addNotes`, {
@@ -32,8 +29,7 @@ const NoteState = (props) => {
       mode: "cors",
       headers: {
         "Content-Type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI1YWRhNTcwNjg2NGU2ZmVlMWMwOWUyIn0sImlhdCI6MTY1MDE3NTc3OX0.3i0ceby7h5Y3F3HfdIQwa_VzF4m3yEkarRAJacqq9oc",
+        "auth-token": localStorage.getItem("token"),
       },
       body: JSON.stringify({ title, description, tag }),
     });
@@ -43,8 +39,7 @@ const NoteState = (props) => {
       mode: "cors",
       headers: {
         "Content-Type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI1YWRhNTcwNjg2NGU2ZmVlMWMwOWUyIn0sImlhdCI6MTY1MDE3NTc3OX0.3i0ceby7h5Y3F3HfdIQwa_VzF4m3yEkarRAJacqq9oc",
+        "auth-token": localStorage.getItem("token"),
       },
     });
 
@@ -59,8 +54,7 @@ const NoteState = (props) => {
       mode: "cors",
       headers: {
         "Content-Type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI1YWRhNTcwNjg2NGU2ZmVlMWMwOWUyIn0sImlhdCI6MTY1MDE3NTc3OX0.3i0ceby7h5Y3F3HfdIQwa_VzF4m3yEkarRAJacqq9oc",
+        "auth-token": localStorage.getItem("token"),
       },
     });
 
@@ -77,8 +71,7 @@ const NoteState = (props) => {
       mode: "cors",
       headers: {
         "Content-Type": "application/json",
-        "auth-token":
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjI1YWRhNTcwNjg2NGU2ZmVlMWMwOWUyIn0sImlhdCI6MTY1MDE3NTc3OX0.3i0ceby7h5Y3F3HfdIQwa_VzF4m3yEkarRAJacqq9oc",
+        "auth-token": localStorage.getItem("token"),
       },
       body: JSON.stringify({
         title: note.title,
@@ -98,7 +91,7 @@ const NoteState = (props) => {
 
   return (
     <noteContext.Provider
-      value={{ notes, setNotes, addNote, deleteNote, updateNote }}
+      value={{ notes, setNotes, addNote, deleteNote, updateNote, fetchNote }}
     >
       {props.children}
     </noteContext.Provider>
