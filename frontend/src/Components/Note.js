@@ -52,7 +52,7 @@ export default function Note() {
   const onUpdate = (e) => {
     e.preventDefault();
     updateNote(unote);
-    showAlert("update", "Note Updated sucessfully");
+    showAlert("Note Updated sucessfully", "update");
   };
 
   return (
